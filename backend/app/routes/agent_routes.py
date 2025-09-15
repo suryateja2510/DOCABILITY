@@ -1,40 +1,20 @@
-from typing import Optional
-
-from fastapi import APIRouter, Query
-from app.services.agents.data_analyzer_agent.agent import run_data_analyzer_agent
-from app.services.agents.demo_agent.agent import run_demo_agent
-from app.services.agents.custom_function_agent.agent import run_custom_function_agent
+from fastapi import APIRouter, File, UploadFile, Form
+from app.utils.process_doc import process_document
 
 router = APIRouter()
 
 
-@router.post("/demo-agent")
-def demo_agent(
-    user_query: str = Query(..., description="Your question for the AI agent"),
-    thread_id: Optional[str] = Query(
-        None, description="Thread ID to maintain conversation"
-    ),
+@router.post("/process-doc")
+async def process_doc_endpoint(
+    file: UploadFile = File(...),
+    task: str = Form(...),
+    target_lang: str = Form("te"),
 ):
-    return run_demo_agent(user_query, thread_id)
-
-
-@router.post("/data-analyzer-agent")
-def data_analyzer_agent(
-    user_query: str = Query(
-        ..., description="Your question for the data analyzer agent"
-    ),
-    thread_id: str = Query(None, description="Thread ID to maintain conversation"),
-):
-    return run_data_analyzer_agent(user_query, thread_id)
-
-
-@router.post("/custom-function-agent")
-def custom_function_agent(
-    user_query: str = Query(
-        ..., description="Your question for the custom function agent"
-    ),
-    thread_id: Optional[str] = Query(
-        None, description="Thread ID to maintain conversation"
-    ),
-):
-    return run_custom_function_agent(user_query, thread_id)
+    """
+    Single endpoint to process a document based on task:
+        - summarize
+        - translate
+        - tts
+    Only file upload is required.
+    """
+    return await process_document(file=file, task=task, target_lang=target_lang)

@@ -1,19 +1,46 @@
-# AI-AGENTS Backend
+# Docability – AI-Powered Document Accessibility Companion
 
-This repository provides a modular backend service for AI agents, built with Python and designed for integration with Azure AI services.
+**Docability** is a Proof of Concept (PoC) that makes documents more accessible for everyone.  
+It provides **summarization, translation, and audio narration** using **AI Agents enhanced with MCP (Model Context Protocol)** for modular, scalable processing.
 
-## Features
+---
 
-- **Multiple AI Agents:** Easily add or customize agents for different tasks (e.g., data analysis, custom functions, demos).
-- **Azure Integration:** Leverages Azure AI Agents and secure authentication.
-- **Modular Structure:** Clean separation of routes, services, and utilities for maintainability.
-- **Environment Configuration:** Uses `.env` for flexible and secure setup.
+## 🌟 Features
+- 📄 **Summarize Documents** – Generate concise summaries of uploaded documents.  
+- 🌍 **Translate Content** – Convert documents into multiple languages.  
+- 🔊 **Audio Narration** – Listen to documents in natural-sounding speech.  
+- 🤝 **Accessibility First** – Designed to support users with visual or cognitive challenges.  
+- 🧩 **Agent + MCP** – Each task (summarization, translation, TTS) is handled by dedicated MCP-enabled tools orchestrated by an AI Agent.  
 
-## Intended Users
+---
 
-- Developers building AI-powered backend services.
-- Teams integrating Azure AI Agents into their applications.
-- Anyone interested in modular, cloud-ready agent architectures.
+## 🏗️ Tech Stack
+- **Backend**: FastAPI (Python)  
+- **AI Orchestration**: Azure AI Agent Service (with MCP protocol support)  
+- **AI Models**: Azure OpenAI (or OpenAI API)  
+- **Text-to-Speech**: Azure Cognitive Services (TTS) or other free TTS APIs  
+- **Frontend (optional)**: React (for user interaction)  
+- **Storage**: Local / Azure Blob (depending on setup)  
 
-- Go to the [backend](./backend/) folder and check out the [README file](./backend/README.md) for more information.
-- For more details on agent usage and customization, see the code in the [`backend/app/services/agents/`](./backend/app/services/agents/) directory.
+---
+
+## ⚙️ How It Works
+1. **Admin uploads a document** (PDF, Word, or Text).  
+2. **Docability extracts text** from the file.  
+3. **AI Agent orchestrates tasks via MCP**:  
+   - Summarizer tool (MCP service) → generates summary  
+   - Translator tool (MCP service) → provides translations  
+   - TTS tool (MCP service) → produces audio narration  
+4. The **User accesses results** from their dashboard:  
+   - Read summary  
+   - View translation  
+   - Play audio narration  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repo
+```bash
+git clone https://github.com/suryateja2510/DOCABILITY
+cd DOCABILITY

@@ -1,4 +1,0 @@
-Support ticket: e7e88c
-Submitted by: test@user.com
-Description:
-Blue screen error observed

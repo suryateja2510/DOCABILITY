@@ -1,13 +1,25 @@
 # app/main.py
 from dotenv import load_dotenv
+import os
+import threading
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from app.routes.agent_routes import router as agent_router
+from app.utils.helpers import cleanup_temp
 
 load_dotenv()
 
-from fastapi import FastAPI
-from app.routes.sample_routes import router as sample_router
-from app.routes.agent_routes import router as agent_router
-
-
 app = FastAPI()
-app.include_router(sample_router, prefix="/sample", tags=["Sample"])
 app.include_router(agent_router, prefix="/agents", tags=["Agents"])
+
+# -----------------------------
+# Serve TTS audio files
+# -----------------------------
+AUDIO_DIR = "temp_audio"
+os.makedirs(AUDIO_DIR, exist_ok=True)
+app.mount("/audio", StaticFiles(directory=AUDIO_DIR), name="audio")
+
+# -----------------------------
+# Start background cleanup
+# -----------------------------
+threading.Thread(target=cleanup_temp, daemon=True).start()

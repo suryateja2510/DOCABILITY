@@ -1,9 +1,37 @@
-fastapi==0.110.0
-uvicorn[standard]==0.29.0
-python-dotenv==1.0.1
+# ==========================
+# Core Backend
+# ==========================
+fastapi==0.110.0             # Web framework for building APIs
+uvicorn[standard]==0.29.0    # ASGI server for running FastAPI
+python-dotenv==1.0.1         # Load environment variables from .env
+pydantic==2.6.4              # Data validation & parsing (used by FastAPI)
+python-multipart==0.0.9      # File upload support for FastAPI
 
-# Azure identity and AI Studio SDKs (agentic AI support)
-azure-identity==1.15.0
-azure-ai-projects>=1.0.0b1
-azure-ai-agents>=1.0.0b1
+# ==========================
+# Document Handling
+# ==========================
+PyPDF2==3.0.1                # Extract text from PDFs (for document uploads)
+pdfplumber==0.9.0            # Optional: more accurate PDF text extraction
+python-docx==0.8.11          # Read/write Word (.docx) files
 
+# ==========================
+# AI / NLP
+# ==========================
+transformers==4.41.2         # HuggingFace models (summarization, translation, etc.)
+torch==2.3.0                 # Required backend for Transformers models
+langchain==0.2.5             # Orchestration framework (chains, prompts, retrieval)
+sentence-transformers==3.0.0 # Embeddings (for chunking/search/retrieval if needed)
+sentencepiece-0.2.1        # Tokenizer for some Transformer models
+googletrans==4.0.0-rc1      # Language translation
+
+# ==========================
+# Text-to-Speech
+# ==========================
+gTTS==2.5.1                  # Google Text-to-Speech (simple free TTS for PoC)
+
+# ==========================
+# Optional – Azure AI Agents + MCP (for future)
+# ==========================
+# azure-identity==1.15.0      # Authenticate with Azure services
+# azure-ai-projects>=1.0.0b1  # Manage AI projects in Azure AI Studio
+# azure-ai-agents>=1.0.0b1    # Build & orchestrate AI Agents with MCP support
