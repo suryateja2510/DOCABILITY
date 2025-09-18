@@ -1,0 +1,34 @@
+--- Summarize only ---
+Please make a short summary of this document.
+Summarize the content in a few sentences.
+Condense this text into a brief overview.
+
+--- Translate only ---
+Translate the document to Telugu.
+Convert this text into Hindi.
+Translate the content to another language.
+
+--- Text-to-Speech only ---
+Read this aloud.
+Convert the text to speech.
+Play the document as audio.
+
+--- Summarize + Translate ---
+Make a short summary and translate it to Telugu.
+Summarize this document and convert it to Hindi.
+Create a summary and translate it to another language.
+
+--- Summarize + TTS ---
+Summarize the document and read it aloud.
+Make a brief summary and play as audio.
+Condense the content and convert to speech.
+
+--- Translate + TTS ---
+Translate this document to Telugu and play it as audio.
+Convert text to Hindi and read it aloud.
+Translate to another language and generate audio.
+
+--- Summarize + Translate + TTS ---
+Make a short summary, convert to Telugu, and play as audio.
+Summarize, translate, and read aloud.
+Condense the text, translate to another language, and generate audio.

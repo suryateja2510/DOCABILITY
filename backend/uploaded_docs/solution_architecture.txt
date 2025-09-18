@@ -1,0 +1,32 @@
+# Docability – Solution Architecture
+
+## System Flow
+1. **User uploads document** (PDF, Word, Text) via frontend (web interface).
+2. **Backend (FastAPI)** receives the file and extracts raw text.
+3. **AI Agent Orchestrator (local)** coordinates tasks through modular services:
+   - Summarizer Service → generates concise summary.
+   - Translator Service → converts text into multiple languages.
+   - Text-to-Speech Service → produces audio narration.
+4. **Processed results returned to frontend**:
+   - Readable text summary.
+   - Downloadable/viewable translations.
+   - Playable audio narration.
+5. **Local storage** ensures temporary document and output handling. 
+   (Future: Azure Blob for scalable and secure storage).
+
+## Components
+- **Frontend**: React (document upload, result dashboard, audio player).
+- **Backend**: FastAPI (routing, API endpoints, integration with AI agents).
+- **Agent Services**: Modular tasks (summarization, translation, TTS) connected via MCP protocol.
+- **Storage**: Local file system (future-ready for Azure Blob/SharePoint).
+- **Models/AI**: Azure OpenAI / OpenAI API (future-ready for enterprise-scale).
+
+## Scalability Potential
+- Move from local-only to hybrid deployment with Azure AI Services.
+- Multiple customers can reuse modular MCP agents across tasks (document translation, accessibility, knowledge management).
+- Can integrate with enterprise document systems (SharePoint, OneDrive).
+
+## Security & Responsible AI Alignment
+- Local-first approach avoids unnecessary data sharing.
+- Future cloud integration will use enterprise security (Azure AD, role-based access).
+- Adheres to Accessibility (WCAG/ADA) and Privacy (GDPR, HIPAA where applicable).

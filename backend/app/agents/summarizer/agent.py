@@ -1,36 +1,43 @@
-import re
+# app/agents/summarizer/agent.py
 from transformers import pipeline
-from app.utils.helpers import clean_text
+from app.utils.helpers import clean_text, chunk_text
+from app.agents.agent_interface import AgentBase
 
-# Initialize summarizer
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-def run(text: str) -> dict:
-    """Summarize text with dynamic max_length based on input size."""
-    cleaned_text = clean_text(text)
-    words = cleaned_text.split()
-    input_length = len(words)
+class SummarizerAgent(AgentBase):
+    def __init__(self):
+        self.summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-    # Adjust max_length for small inputs
-    max_length = min(250, max(20, input_length // 2))
-    min_length = min(20, max_length)
+    def run(self, text: str, **kwargs) -> dict:
+        """Summarize text in chunks to avoid model limits."""
+        cleaned_text = clean_text(text)
+        if not cleaned_text:
+            return {
+                "task": "summarization",
+                "input_length": 0,
+                "output": "",
+                "error": "No text to summarize.",
+            }
 
-    try:
-        summary_result = summarizer(
-            cleaned_text,
-            max_length=max_length,
-            min_length=min_length,
-            do_sample=False,
-        )
-        summary_text = summary_result[0]["summary_text"]
-        error = None
-    except Exception as e:
-        summary_text = None
-        error = str(e)
+        chunks = chunk_text(cleaned_text, max_chars=500)
+        summaries = []
+        errors = []
 
-    return {
-        "task": "summarization",
-        "input_length": input_length,
-        "output": summary_text,
-        "error": error,
-    }
+        for chunk in chunks:
+            try:
+                max_length = min(250, max(20, len(chunk.split()) // 2))
+                min_length = min(20, max_length)
+                summary_result = self.summarizer(
+                    chunk, max_length=max_length, min_length=min_length, do_sample=False
+                )
+                summaries.append(summary_result[0]["summary_text"])
+            except Exception as e:
+                errors.append(str(e))
+
+        final_summary = " ".join(summaries)
+        return {
+            "task": "summarization",
+            "input_length": len(cleaned_text.split()),
+            "output": final_summary,
+            "error": "; ".join(errors) if errors else None,
+        }

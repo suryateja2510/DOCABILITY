@@ -1,37 +1,32 @@
 # ==========================
-# Core Backend
+# DOCABILITY POC - Python 3.11, Windows Compatible
 # ==========================
-fastapi==0.110.0             # Web framework for building APIs
+
+# --- Core Backend ---
+fastapi==0.95.2              # Web framework for APIs (compatible with Pydantic 1.x and Python 3.11)
 uvicorn[standard]==0.29.0    # ASGI server for running FastAPI
 python-dotenv==1.0.1         # Load environment variables from .env
-pydantic==2.6.4              # Data validation & parsing (used by FastAPI)
+pydantic==1.10.13            # Data validation & parsing (used by FastAPI, no Rust required)
 python-multipart==0.0.9      # File upload support for FastAPI
 
-# ==========================
-# Document Handling
-# ==========================
-PyPDF2==3.0.1                # Extract text from PDFs (for document uploads)
-pdfplumber==0.9.0            # Optional: more accurate PDF text extraction
+# --- Document Handling ---
+PyPDF2==3.0.1                # Extract text from PDFs
+pdfplumber==0.9.0            # More accurate PDF text extraction (optional)
 python-docx==0.8.11          # Read/write Word (.docx) files
 
-# ==========================
-# AI / NLP
-# ==========================
-transformers==4.41.2         # HuggingFace models (summarization, translation, etc.)
-torch==2.3.0                 # Required backend for Transformers models
-langchain==0.2.5             # Orchestration framework (chains, prompts, retrieval)
-sentence-transformers==3.0.0 # Embeddings (for chunking/search/retrieval if needed)
-sentencepiece-0.2.1        # Tokenizer for some Transformer models
-googletrans==4.0.0-rc1      # Language translation
+# --- AI / NLP ---
+transformers==4.30.2          # HuggingFace models (summarization, translation, etc.) - Python 3.11 compatible
+sentence-transformers==2.2.2  # Embeddings, semantic similarity, intent detection
+tokenizers==0.13.3            # Fast tokenization for Transformers (prebuilt wheel, no Rust needed on 3.11)
+torch==2.8.0                  # Backend for Transformers models (CPU + Python 3.11 compatible)
+sentencepiece==0.1.99          # Required for some Transformer models (tokenization / T5 / Marian models)
+googletrans==4.0.0rc1         # Language translation (Python 3.11 supported)
 
-# ==========================
-# Text-to-Speech
-# ==========================
-gTTS==2.5.1                  # Google Text-to-Speech (simple free TTS for PoC)
+# --- Text-to-Speech ---
+gTTS==2.5.1                   # Google Text-to-Speech (simple free TTS for PoC)
 
-# ==========================
-# Optional – Azure AI Agents + MCP (for future)
-# ==========================
+# --- Optional / Future: Azure AI Agents + MCP ---
+# (Commented out, only needed for cloud deployment)
 # azure-identity==1.15.0      # Authenticate with Azure services
 # azure-ai-projects>=1.0.0b1  # Manage AI projects in Azure AI Studio
 # azure-ai-agents>=1.0.0b1    # Build & orchestrate AI Agents with MCP support

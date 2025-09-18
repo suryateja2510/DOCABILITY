@@ -1,24 +1,34 @@
-from typing import Optional
-from app.utils.helpers import save_and_extract
-from app.agents.summarizer.agent import run as summarize_agent
-from app.agents.translator.agent import run as translate_agent
-from app.agents.tts.agent import run as tts_agent
-from fastapi import UploadFile
+# app/utils/process_doc.py
+import os
+from app.agents.summarizer.agent import SummarizerAgent
+from app.agents.translator.agent import TranslatorAgent
+from app.agents.tts.agent import TTSAgent
+from app.utils.helpers import extract_text
 from app.utils.constants import AgentTasks
 
+# Instantiate agents once
+summarizer_agent = SummarizerAgent()
+translator_agent = TranslatorAgent()
+tts_agent = TTSAgent()
 
-async def process_document(
-    file: UploadFile, task: AgentTasks, target_lang: str = "te"
-) -> dict:
+
+def process_document_from_path(file_path: str, task: str) -> dict:
     """
-    Unified document processing:
-        - summarize
-        - translate
-        - tts
-    Only file upload is required.
+    Process a document from a local path with a given task:
+    - summarize
+    - translate
+    - tts
     """
-    # Extract text
-    result = save_and_extract(file)
+    if not os.path.exists(file_path):
+        return {
+            "task": task,
+            "input_length": 0,
+            "output": None,
+            "error": "File not found",
+        }
+
+    # Extract text from file
+    result = extract_text(file_path)
     if result["error"]:
         return {
             "task": task,
@@ -35,22 +45,24 @@ async def process_document(
             "task": task,
             "input_length": 0,
             "output": None,
-            "error": "Uploaded file contains no text.",
+            "error": "File has no text",
         }
 
     try:
-        if task.lower() == AgentTasks.SUMMARIZE:
-            output = summarize_agent(text)
-        elif task.lower() == AgentTasks.TRANSLATE:
-            output = translate_agent(text, target_lang)
-        elif task.lower() == AgentTasks.TEXT_TO_SPEECH:
-            output = tts_agent(text)
+        # Call the appropriate agent
+        task_lower = task.lower()
+        if task_lower == AgentTasks.SUMMARIZE:
+            output = summarizer_agent.run(text)
+        elif task_lower == AgentTasks.TRANSLATE:
+            output = translator_agent.run(text)
+        elif task_lower == AgentTasks.TEXT_TO_SPEECH:
+            output = tts_agent.run(text)
         else:
             return {
                 "task": task,
                 "input_length": input_length,
                 "output": None,
-                "error": f"Unsupported task '{task}'. Supported: summarize, translate, tts",
+                "error": f"Unsupported task '{task}'",
             }
     except Exception as e:
         return {
@@ -64,9 +76,5 @@ async def process_document(
         "task": task,
         "input_length": input_length,
         "output": output,
-        "error": (
-            None
-            if not isinstance(output, dict) or "error" not in output
-            else output.get("error")
-        ),
+        "error": None if not isinstance(output, dict) else output.get("error"),
     }
