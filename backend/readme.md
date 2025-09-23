@@ -5,5 +5,6 @@ py -3.11 -m venv .venv
 pip install -r requirements.txt
 
 create .env file with the keys mentioned in .env.template file. Add yours
+   ENVIRONMENT=dev add this while running in local
 
 py startup.py

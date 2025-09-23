@@ -21,6 +21,7 @@ tokenizers==0.13.3            # Fast tokenization for Transformers (prebuilt whe
 torch==2.8.0                  # Backend for Transformers models (CPU + Python 3.11 compatible)
 sentencepiece==0.1.99          # Required for some Transformer models (tokenization / T5 / Marian models)
 googletrans==4.0.0rc1         # Language translation (Python 3.11 supported)
+huggingface_hub==0.14.1     # Access models from HuggingFace Hub
 
 # --- Text-to-Speech ---
 gTTS==2.5.1                   # Google Text-to-Speech (simple free TTS for PoC)
