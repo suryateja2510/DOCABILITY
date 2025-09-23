@@ -59,3 +59,21 @@ class TTSAgent(AgentBase):
                 "file_path": None,
                 "error": str(e),
             }
+
+    def text_to_speech(self, content, tts_lang="en"):
+        cleaned_text = clean_text(content)
+        if not cleaned_text:
+            return None
+        if tts_lang not in self.SUPPORTED_LANGS:
+            tts_lang = "en"
+        try:
+            # Use a predictable filename based on timestamp
+            import time
+
+            filename = f"audio_{int(time.time())}.mp3"
+            file_path = os.path.join(AUDIO_DIR, filename)
+            tts = gTTS(text=cleaned_text, lang=tts_lang)
+            tts.save(file_path)
+            return file_path
+        except Exception:
+            return None

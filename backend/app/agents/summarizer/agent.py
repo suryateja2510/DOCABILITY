@@ -41,3 +41,14 @@ class SummarizerAgent(AgentBase):
             "output": final_summary,
             "error": "; ".join(errors) if errors else None,
         }
+
+    def summarize(self, content, lines=None, chars=None, words=None):
+        # Enhanced summary logic with constraints
+        if chars:
+            return content[:chars]
+        if words:
+            return " ".join(content.split()[:words])
+        if lines:
+            return "\n".join(content.splitlines()[:lines])
+        # Default summary
+        return content[:200]  # Return first 200 chars as summary

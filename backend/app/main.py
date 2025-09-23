@@ -16,7 +16,8 @@ app.include_router(agent_router, prefix="/agents", tags=["Agents"])
 # Serve TTS audio files
 # -----------------------------
 AUDIO_DIR = "temp_audio"
-os.makedirs(AUDIO_DIR, exist_ok=True)
+if not os.path.exists(AUDIO_DIR):
+    os.makedirs(AUDIO_DIR)
 app.mount("/audio", StaticFiles(directory=AUDIO_DIR), name="audio")
 
 # -----------------------------
